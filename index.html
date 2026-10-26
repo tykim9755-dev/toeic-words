@@ -62,7 +62,6 @@
   .progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin: 6px 0 16px; }
   .progress > div { height: 100%; background: var(--primary); }
   .q-meaning { font-size: 24px; font-weight: 700; margin: 10px 0 8px; line-height: 1.35; }
-  .hint { font-family: Consolas, "SF Mono", Menlo, monospace; font-size: 22px; letter-spacing: 1px; margin: 12px 0 16px; color: #374151; }
   input[type=text] { font: inherit; font-size: 20px; width: 100%; padding: 12px 14px; border: 2px solid var(--line); border-radius: 10px; }
   input[type=text]:focus { outline: none; border-color: var(--primary); }
   .fb { border-radius: 12px; padding: 14px; margin: 12px 0; }
@@ -612,9 +611,6 @@ function viewTest() {
   ];
 }
 
-function hintOf(word) {
-  return [...word].map((c, i) => (i === 0 ? c : /[a-z]/i.test(c) ? '_' : c)).join(' ');
-}
 function viewQuestion(p) {
   const id = p.ids[p.index];
   const w = WMAP.get(id);
@@ -630,8 +626,7 @@ function viewQuestion(p) {
     h('div', { class: 'progress' }, h('div', { style: 'width:' + pct + '%' })),
     h('div', { class: 'card' },
       badge(w.pos),
-      h('div', { class: 'q-meaning' }, w.meaning),
-      h('div', { class: 'hint', 'aria-label': '힌트' }, hintOf(w.word))),
+      h('div', { class: 'q-meaning' }, w.meaning)),
   ];
 
   if (!answered) {
