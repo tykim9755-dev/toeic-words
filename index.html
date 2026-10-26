@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1f5fbf">
+<title>토익 600 단어장</title>
+<style>
+  :root {
+    --bg: #f5f6f8; --card: #fff; --text: #111827; --muted: #6b7280; --line: #e5e7eb;
+    --primary: #1f5fbf; --primary-weak: #eaf1fb;
+    --ok: #15803d; --ok-bg: #e8f6ec; --ng: #dc2626; --ng-bg: #fdecec; --warn-bg: #fff7e6; --warn: #92400e;
+    --n: #2563eb; --v: #16a34a; --adj: #ea580c; --adv: #7c3aed; --prep: #0d9488; --conj: #db2777;
+    --nav-h: 60px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", sans-serif;
+    -webkit-text-size-adjust: 100%; }
+  main { max-width: 560px; margin: 0 auto; padding: 16px 16px calc(var(--nav-h) + 24px + env(safe-area-inset-bottom)); }
+  h1 { font-size: 22px; margin: 4px 0 14px; }
+  h2 { font-size: 17px; margin: 18px 0 10px; }
+  p { line-height: 1.55; }
+  .muted { color: var(--muted); font-size: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+  .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .between { justify-content: space-between; }
+  .grow { flex: 1; }
+  button, .btn { font: inherit; border: 1px solid var(--line); background: #fff; color: var(--text); border-radius: 10px;
+    padding: 10px 14px; cursor: pointer; min-height: 44px; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .primary { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
+  .danger { color: var(--ng); border-color: #f3c4c4; }
+  .block { display: block; width: 100%; }
+  .link { background: none; border: none; color: var(--muted); text-decoration: underline; min-height: 0; padding: 6px; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+  .stat b { display: block; font-size: 22px; margin-top: 4px; }
+  .stat small { color: var(--muted); }
+  .banner { background: var(--warn-bg); color: var(--warn); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; font-size: 14px; }
+  .info { background: var(--primary-weak); color: #1f3b63; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; font-size: 14px; }
+  .status { font-size: 18px; font-weight: 700; margin: 4px 0 12px; }
+
+  .badge { display: inline-block; font-size: 12px; font-weight: 600; color: #fff; border-radius: 999px; padding: 2px 9px; vertical-align: middle; }
+  .pos-n { background: var(--n); } .pos-v { background: var(--v); } .pos-adj { background: var(--adj); }
+  .pos-adv { background: var(--adv); } .pos-prep { background: var(--prep); } .pos-conj { background: var(--conj); }
+  .tag { display: inline-block; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 2px 7px; background: var(--warn-bg); color: var(--warn); }
+  .tag.done { background: var(--ok-bg); color: var(--ok); }
+
+  .word { font-size: 26px; font-weight: 700; letter-spacing: .2px; }
+  .meaning { font-size: 17px; margin: 6px 0 8px; }
+  .ex { font-size: 15px; margin: 2px 0; }
+  .exko { font-size: 14px; color: var(--muted); margin: 2px 0; }
+  .chk { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); cursor: pointer; padding: 6px 0; }
+  .chk input { width: 20px; height: 20px; }
+
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .seg button { border: none; border-radius: 0; min-height: 36px; padding: 6px 12px; font-size: 14px; }
+  .seg button.on { background: var(--primary); color: #fff; }
+
+  .progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin: 6px 0 16px; }
+  .progress > div { height: 100%; background: var(--primary); }
+  .q-meaning { font-size: 24px; font-weight: 700; margin: 10px 0 8px; line-height: 1.35; }
+  .hint { font-family: Consolas, "SF Mono", Menlo, monospace; font-size: 22px; letter-spacing: 1px; margin: 12px 0 16px; color: #374151; }
+  input[type=text] { font: inherit; font-size: 20px; width: 100%; padding: 12px 14px; border: 2px solid var(--line); border-radius: 10px; }
+  input[type=text]:focus { outline: none; border-color: var(--primary); }
+  .fb { border-radius: 12px; padding: 14px; margin: 12px 0; }
+  .fb.ok { background: var(--ok-bg); } .fb.ng { background: var(--ng-bg); }
+  .fb-title { font-size: 20px; font-weight: 800; }
+  .fb.ok .fb-title { color: var(--ok); } .fb.ng .fb-title { color: var(--ng); }
+  .score { font-size: 40px; font-weight: 800; margin: 4px 0; }
+  select { font: inherit; min-height: 44px; border-radius: 10px; border: 1px solid var(--line); padding: 0 10px; background: #fff; }
+
+  nav { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom); z-index: 10; }
+  nav .inner { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); }
+  nav button { border: none; border-radius: 0; background: none; height: var(--nav-h); font-size: 13px; color: var(--muted); padding: 4px 2px; }
+  nav button.on { color: var(--primary); font-weight: 700; box-shadow: inset 0 3px 0 var(--primary); }
+  .toast { position: fixed; left: 50%; bottom: calc(var(--nav-h) + 16px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+    background: #111827; color: #fff; padding: 10px 16px; border-radius: 10px; font-size: 14px; z-index: 20; max-width: 90vw; }
+  .dev { border: 2px dashed #f59e0b; }
+</style>
+</head>
+<body>
+<main id="app"></main>
+<nav><div class="inner" id="nav"></div></nav>
+<script src="words.js"></script>
+<script>
+'use strict';
+
+/* ---------- 상수 · 저장소 ---------- */
+const KEY = 'toeic600_state';
+const BKEY = 'toeic600_state_backup';
+const CKEY = 'toeic600_state_corrupt';
+const DEVKEY = 'toeic600_dev_offset';
+const DEV = new URLSearchParams(location.search).get('dev') === '1';
+const WORDS = Array.isArray(window.WORDS) ? window.WORDS : [];
+const WMAP = new Map(WORDS.map((w) => [w.id, w]));
+const POS_CLASS = { '명사': 'n', '동사': 'v', '형용사': 'adj', '부사': 'adv', '전치사': 'prep', '접속사': 'conj' };
+const SET_SIZE = 30;
+const RETRY_MAX = 10;
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const TEST_TYPES = ['daily', 'daily-retry', 'cumulative'];
+
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+
+/* ---------- 날짜 (기기 현지 시간, toISOString 쓰지 않음) ---------- */
+function pad(n) { return String(n).padStart(2, '0'); }
+function fmt(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function parseD(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
+function addDays(s, n) { const d = parseD(s); d.setDate(d.getDate() + n); return fmt(d); }
+function diffDays(a, b) { return Math.round((parseD(b) - parseD(a)) / 86400000); } // b - a
+function mmdd(s) { return s.slice(5).replace('-', '/'); }
+function devOffset() {
+  if (!DEV) return 0;
+  const n = parseInt(lsGet(DEVKEY) || '0', 10);
+  return Number.isFinite(n) && n >= 0 && n < 3650 ? n : 0;
+}
+function today() { const d = new Date(); d.setDate(d.getDate() + devOffset()); return fmt(d); }
+
+/* ---------- 상태 ---------- */
+function freshState() {
+  return { version: 1, days: {}, words: {}, retryQueue: [], review: {}, testHistory: [], inProgress: null,
+    settings: { viewMode: 'list', lastBackup: null } };
+}
+const isObj = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
+const isNat = (x) => Number.isInteger(x) && x >= 0;
+const isDate = (x) => typeof x === 'string' && DATE_RE.test(x);
+
+// 저장된 기록·가져온 파일을 같은 규칙으로 검사한다. 틀리면 Error, 맞으면 정리된 상태와 버린 id 수.
+function validate(o) {
+  const fail = (m) => { throw new Error(m); };
+  if (!isObj(o)) fail('JSON 객체가 아닙니다.');
+  if (o.version !== 1) fail('지원하지 않는 버전입니다 (version: ' + String(o.version) + ').');
+  for (const k of ['days', 'words', 'review']) if (!isObj(o[k])) fail(k + ' 항목이 없거나 형식이 틀렸습니다.');
+  for (const k of ['retryQueue', 'testHistory']) if (!Array.isArray(o[k])) fail(k + ' 항목이 없거나 형식이 틀렸습니다.');
+
+  const dropped = new Set();
+  const known = (id) => { if (WMAP.has(id)) return true; dropped.add(id); return false; };
+  const s = freshState();
+
+  for (const [k, d] of Object.entries(o.days)) {
+    if (!isDate(k) || !isObj(d) || !Array.isArray(d.wordIds)) fail('days 형식 오류: ' + k);
+    const ids = d.wordIds.filter(Number.isInteger);
+    s.days[k] = {
+      wordIds: [...new Set(ids)].filter(known),
+      retryIds: (Array.isArray(d.retryIds) ? d.retryIds : []).filter((id) => Number.isInteger(id) && WMAP.has(id)),
+      studyDone: d.studyDone === true,
+      doneDate: isDate(d.doneDate) ? d.doneDate : null,
+      testScore: isNat(d.testScore) ? d.testScore : null,
+    };
+  }
+  for (const [k, w] of Object.entries(o.words)) {
+    const id = Number(k);
+    if (!Number.isInteger(id) || !isObj(w) || !isDate(w.firstSeen)) fail('words 형식 오류: ' + k);
+    if (!known(id)) continue;
+    s.words[id] = {
+      firstSeen: w.firstSeen,
+      correct: isNat(w.correct) ? w.correct : 0,
+      wrong: isNat(w.wrong) ? w.wrong : 0,
+      recent: typeof w.recent === 'string' && /^[OX]{0,5}$/.test(w.recent) ? w.recent : '',
+      lastTested: isDate(w.lastTested) ? w.lastTested : null,
+    };
+  }
+  const seen = new Set();
+  for (const r of o.retryQueue) {
+    if (!isObj(r) || !Number.isInteger(r.id) || !isDate(r.added)) fail('retryQueue 형식 오류');
+    if (seen.has(r.id) || !known(r.id)) continue;
+    seen.add(r.id); s.retryQueue.push({ id: r.id, added: r.added });
+  }
+  for (const [k, v] of Object.entries(o.review)) {
+    const id = Number(k);
+    if (!Number.isInteger(id) || !isDate(v)) fail('review 형식 오류: ' + k);
+    if (known(id)) s.review[id] = v;
+  }
+  for (const t of o.testHistory) {
+    if (!isObj(t) || !isDate(t.date) || !TEST_TYPES.includes(t.type) || !isNat(t.total) || !isNat(t.correct) || t.correct > t.total) {
+      fail('testHistory 형식 오류');
+    }
+    s.testHistory.push({ date: t.date, type: t.type, total: t.total, correct: t.correct });
+  }
+  const p = o.inProgress;
+  if (isObj(p) && TEST_TYPES.includes(p.type) && Array.isArray(p.ids) && p.ids.length && p.ids.every((id) => WMAP.has(id))
+      && isNat(p.index) && Array.isArray(p.results) && p.results.length <= p.ids.length
+      && (p.type === 'cumulative' || (isDate(p.setDate) && s.days[p.setDate]))) {
+    s.inProgress = {
+      type: p.type, setDate: p.setDate || null, n: isNat(p.n) ? p.n : null, ids: p.ids, index: Math.min(p.index, p.ids.length - 1),
+      results: p.results.filter((r) => isObj(r) && WMAP.has(r.id)).map((r) => ({ id: r.id, input: String(r.input || '').slice(0, 100), ok: r.ok === true })),
+    };
+  }
+  if (isObj(o.settings)) {
+    if (o.settings.viewMode === 'card') s.settings.viewMode = 'card';
+    if (isDate(o.settings.lastBackup)) s.settings.lastBackup = o.settings.lastBackup;
+  }
+  return { state: s, dropped: dropped.size };
+}
+
+function load() {
+  const raw = lsGet(KEY);
+  if (!raw) return freshState();
+  try {
+    return validate(JSON.parse(raw)).state;
+  } catch (e) {
+    console.error('저장된 기록을 읽지 못했습니다', e);
+    lsSet(CKEY, raw);
+    setTimeout(() => toast('저장된 기록이 손상되어 새로 시작합니다. 원본은 따로 보관했습니다.'), 300);
+    return freshState();
+  }
+}
+let S = load();
+function save() {
+  if (!lsSet(KEY, JSON.stringify(S))) toast('기록을 저장하지 못했습니다. 브라우저 저장 공간을 확인하세요.');
+}
+
+/* ---------- 유틸 ---------- */
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+const norm = (s) => String(s).trim().toLowerCase();
+const answersOf = (w) => [w.word, ...(Array.isArray(w.accept) ? w.accept : [])].map(norm);
+const recentWrong = (w) => (w.recent.match(/X/g) || []).length;
+const learnedIds = () => Object.keys(S.words).map(Number).filter((id) => WMAP.has(id));
+const allRead = () => WORDS.length > 0 && WORDS.every((w) => S.words[w.id]);
+
+/* ---------- 세트 선정 (5장) ---------- */
+function unfinishedKey() {
+  return Object.keys(S.days).filter((k) => !S.days[k].studyDone).sort()[0] || null;
+}
+function currentKey() {
+  const u = unfinishedKey();
+  if (u) return u;
+  const t = today();
+  if (S.days[t]) return t;
+  return Object.keys(S.days).find((k) => S.days[k].doneDate === t) || null;
+}
+function createSet() {
+  const t = today();
+  const picked = [];
+  const has = new Set();
+  const take = (id) => { picked.push(id); has.add(id); };
+
+  const retry = S.retryQueue
+    .filter((r) => r.added < t && WMAP.has(r.id))
+    .sort((a, b) => a.added.localeCompare(b.added))
+    .slice(0, RETRY_MAX)
+    .map((r) => r.id);
+  retry.forEach(take);
+
+  const fresh = shuffle(WORDS.map((w) => w.id).filter((id) => !S.words[id] && !has.has(id)));
+  for (const id of fresh) { if (picked.length >= SET_SIZE) break; take(id); }
+
+  if (picked.length < SET_SIZE) {
+    const last = (w) => w.lastTested || w.firstSeen;
+    const filler = learnedIds().filter((id) => !has.has(id)).sort((a, b) => {
+      const wa = S.words[a], wb = S.words[b];
+      return recentWrong(wb) - recentWrong(wa) || last(wa).localeCompare(last(wb));
+    });
+    for (const id of filler) { if (picked.length >= SET_SIZE) break; take(id); }
+  }
+  S.days[t] = { wordIds: picked, retryIds: retry, studyDone: false, doneDate: null, testScore: null };
+  save();
+  return t;
+}
+function ensureSet() { return currentKey() || createSet(); }
+
+/* ---------- 테스트 ---------- */
+function pickCumulative(n) {
+  const t = today();
+  const pool = learnedIds().map((id) => {
+    const w = S.words[id];
+    const days = Math.max(0, diffDays(w.lastTested || w.firstSeen, t));
+    return { id, wt: Math.max(0.3, 0.5 + 2 * recentWrong(w) + 0.1 * Math.min(days, 30)) };
+  });
+  const out = [];
+  const count = Math.min(n, pool.length);
+  while (out.length < count) {
+    const sum = pool.reduce((a, p) => a + p.wt, 0);
+    let r = Math.random() * sum;
+    let i = 0;
+    for (; i < pool.length - 1; i++) { r -= pool[i].wt; if (r < 0) break; }
+    out.push(pool[i].id);
+    pool.splice(i, 1);
+  }
+  return out;
+}
+function startTest(type, opts) {
+  if (S.inProgress && !confirm('진행 중인 테스트가 있습니다. 버리고 새로 시작할까요?')) return;
+  let ids;
+  if (type === 'cumulative') {
+    ids = pickCumulative(opts.n);
+  } else {
+    const d = S.days[opts.setDate];
+    if (!d) return;
+    ids = shuffle(d.wordIds.slice());
+    type = d.studyDone ? 'daily-retry' : 'daily';
+  }
+  if (!ids.length) { toast('출제할 단어가 없습니다.'); return; }
+  S.inProgress = { type, setDate: opts.setDate || null, n: opts.n || null, ids, index: 0, results: [] };
+  save();
+  ui.resumePending = false;
+  ui.lastResult = null;
+  go('test');
+}
+function restartTest() {
+  const p = S.inProgress;
+  S.inProgress = null;
+  startTest(p.type, { setDate: p.setDate, n: p.n || p.ids.length });
+}
+function submitAnswer(input) {
+  const p = S.inProgress;
+  const id = p.ids[p.index];
+  const ok = answersOf(WMAP.get(id)).includes(norm(input));
+  p.results.push({ id, input: String(input).slice(0, 100), ok });
+  save();
+  render();
+}
+function acceptAsCorrect() {
+  const r = S.inProgress.results[S.inProgress.index];
+  r.ok = true;
+  save();
+  render();
+}
+function nextQuestion() {
+  const p = S.inProgress;
+  if (p.index + 1 >= p.ids.length) { finishTest(); return; }
+  p.index++;
+  save();
+  render();
+}
+function grade(id, ok, t) {
+  if (!S.words[id]) S.words[id] = { firstSeen: t, correct: 0, wrong: 0, recent: '', lastTested: null };
+  const w = S.words[id];
+  w.recent = (w.recent + (ok ? 'O' : 'X')).slice(-5);
+  w.lastTested = t;
+  const qi = S.retryQueue.findIndex((r) => r.id === id);
+  if (ok) {
+    w.correct++;
+    if (qi >= 0 && S.retryQueue[qi].added < t) S.retryQueue.splice(qi, 1);
+  } else {
+    w.wrong++;
+    if (qi >= 0) S.retryQueue[qi].added = t;
+    else S.retryQueue.push({ id, added: t });
+  }
+}
+function finishTest() {
+  const p = S.inProgress;
+  const t = today();
+  const correct = p.results.filter((r) => r.ok).length;
+  let type = p.type;
+  if (type === 'daily') {
+    const d = S.days[p.setDate];
+    if (d && !d.studyDone) {
+      d.studyDone = true;
+      d.doneDate = t;
+      d.testScore = correct;
+      d.wordIds.forEach((id) => {
+        if (!S.words[id]) S.words[id] = { firstSeen: t, correct: 0, wrong: 0, recent: '', lastTested: null };
+      });
+    } else {
+      type = 'daily-retry';
+    }
+  }
+  p.results.forEach((r) => grade(r.id, r.ok, t));
+  S.testHistory.push({ date: t, type, total: p.results.length, correct });
+  ui.lastResult = { type, setDate: p.setDate, n: p.n, total: p.results.length, correct, wrongIds: p.results.filter((r) => !r.ok).map((r) => r.id) };
+  S.inProgress = null;
+  save();
+  render();
+}
+
+/* ---------- 현황 ---------- */
+function streak() {
+  const done = new Set(Object.values(S.days).map((d) => d.doneDate).filter(Boolean));
+  const t = today();
+  const todayDone = done.has(t);
+  let d = todayDone ? t : addDays(t, -1);
+  let n = 0;
+  while (done.has(d)) { n++; d = addDays(d, -1); }
+  return { n, todayDone };
+}
+function accuracy() {
+  let total = 0, correct = 0;
+  S.testHistory.forEach((h) => { total += h.total; correct += h.correct; });
+  return total ? Math.round((correct / total) * 100) : null;
+}
+function toggleReview(id, on) {
+  if (on) S.review[id] = today(); else delete S.review[id];
+  save();
+}
+
+/* ---------- 내보내기 · 가져오기 ---------- */
+function exportJson() {
+  S.settings.lastBackup = today();
+  save();
+  const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'toeic600-backup-' + today() + '.json';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast('학습 기록을 내보냈습니다.');
+  render();
+}
+function importJson(file) {
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('가져오기 실패: 파일이 너무 큽니다 (5MB 초과).'); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    let result;
+    try {
+      result = validate(JSON.parse(reader.result));
+    } catch (e) {
+      alert('가져오기 실패: ' + (e instanceof SyntaxError ? 'JSON 형식이 아닙니다.' : e.message) + '\n기존 기록은 그대로 남아 있습니다.');
+      return;
+    }
+    let msg = '현재 기록을 가져온 파일로 덮어씁니다. 계속할까요?';
+    if (result.dropped) msg += '\n(words.js에 없는 단어 ' + result.dropped + '개는 버립니다.)';
+    if (!confirm(msg)) return;
+    lsSet(BKEY, JSON.stringify(S));
+    S = result.state;
+    S.inProgress = null;
+    save();
+    ui.lastResult = null;
+    toast('기록을 가져왔습니다.' + (result.dropped ? ' 버린 단어 ' + result.dropped + '개' : ''));
+    go('home');
+  };
+  reader.onerror = () => alert('가져오기 실패: 파일을 읽지 못했습니다.');
+  reader.readAsText(file);
+}
+function resetAll() {
+  if (!confirm('모든 학습 기록을 지웁니다. 되돌릴 수 없습니다. 계속할까요?')) return;
+  lsSet(BKEY, JSON.stringify(S));
+  S = freshState();
+  save();
+  ui.lastResult = null;
+  toast('기록을 초기화했습니다.');
+  go('home');
+}
+
+/* ---------- DOM 도우미 (innerHTML 쓰지 않음) ---------- */
+function h(tag, props, ...kids) {
+  const e = document.createElement(tag);
+  if (props) {
+    for (const [k, v] of Object.entries(props)) {
+      if (v === null || v === undefined || v === false) continue;
+      if (k === 'class') e.className = v;
+      else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+      else if (typeof v === 'boolean') e[k] = v;
+      else e.setAttribute(k, v);
+    }
+  }
+  for (const c of kids.flat()) {
+    if (c === null || c === undefined || c === false) continue;
+    e.append(c instanceof Node ? c : String(c));
+  }
+  return e;
+}
+const badge = (pos) => h('span', { class: 'badge pos-' + (POS_CLASS[pos] || 'n') }, pos);
+function reviewBox(id, onChange) {
+  return h('label', { class: 'chk' },
+    h('input', { type: 'checkbox', checked: !!S.review[id], onchange: (e) => { toggleReview(id, e.target.checked); if (onChange) onChange(); } }),
+    '복습');
+}
+function wordCard(w, { retry = false, showReview = true } = {}) {
+  return h('div', { class: 'card' },
+    h('div', { class: 'row between' },
+      h('div', { class: 'row' }, h('span', { class: 'word' }, w.word), badge(w.pos), retry ? h('span', { class: 'tag' }, '다시 보기') : null),
+      showReview ? reviewBox(w.id) : null),
+    h('div', { class: 'meaning' }, w.meaning),
+    h('div', { class: 'ex' }, w.example),
+    h('div', { class: 'exko' }, w.exampleKo));
+}
+let toastTimer = null;
+function toast(msg) {
+  document.querySelectorAll('.toast').forEach((t) => t.remove());
+  const t = h('div', { class: 'toast', role: 'status' }, msg);
+  document.body.appendChild(t);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.remove(), 2600);
+}
+
+/* ---------- 화면 ---------- */
+const ui = { view: 'home', cardIdx: 0, cumN: 20, resumePending: false, lastResult: null };
+const TABS = [['home', '홈'], ['today', '오늘의 단어'], ['test', '테스트'], ['review', '복습'], ['settings', '설정']];
+function go(view) { ui.view = view; if (view === 'today') ui.cardIdx = 0; render(); window.scrollTo(0, 0); }
+
+function viewHome() {
+  const key = currentKey();
+  const d = key ? S.days[key] : null;
+  const t = today();
+  const p = S.inProgress;
+  let status, btn;
+  if (!d) {
+    status = '오늘 학습 전';
+    btn = h('button', { class: 'primary block', onclick: () => { ensureSet(); go('today'); } }, '오늘 공부 시작');
+  } else if (!d.studyDone) {
+    const testing = p && p.setDate === key && p.type === 'daily';
+    status = (testing ? '당일 테스트 중' : '학습 중') + (key !== t ? ' · ' + mmdd(key) + ' 세트 이어서' : '');
+    btn = h('button', { class: 'primary block', onclick: () => go(testing ? 'test' : 'today') }, '이어서 하기');
+  } else {
+    status = '오늘 학습 완료 ✓' + (d.testScore !== null ? ' (' + d.testScore + '/' + d.wordIds.length + ')' : '');
+    btn = h('button', { class: 'primary block', onclick: () => go('test') }, '누적 테스트 하러 가기');
+  }
+  const st = streak();
+  const acc = accuracy();
+  const lb = S.settings.lastBackup;
+  let banner = null;
+  if (learnedIds().length && !lb) banner = '아직 학습 기록을 백업한 적이 없습니다. 설정에서 내보내기를 해 두세요.';
+  else if (lb && diffDays(lb, t) >= 7) banner = '백업한 지 ' + diffDays(lb, t) + '일 지났습니다. 설정에서 내보내기를 해 두세요.';
+
+  return [
+    h('h1', null, '토익 600 단어장'),
+    DEV ? h('div', { class: 'banner dev' }, '개발 모드 · 오늘 날짜 = ' + t) : null,
+    banner ? h('div', { class: 'banner', onclick: () => go('settings'), style: 'cursor:pointer' }, banner) : null,
+    allRead() ? h('div', { class: 'info' }, '🎉 전체 단어 1회독 완료! 이제부터는 복습 단어로 세트를 채웁니다.') : null,
+    h('div', { class: 'card' },
+      h('div', { class: 'muted' }, t.replace(/-/g, '.')),
+      h('div', { class: 'status' }, status),
+      btn,
+      p && !(d && p.setDate === key && p.type === 'daily')
+        ? h('button', { class: 'block', style: 'margin-top:8px', onclick: () => go('test') }, '진행 중인 테스트 이어서 풀기') : null),
+    h('div', { class: 'stats' },
+      h('div', { class: 'stat' }, h('small', null, '누적 학습 단어'), h('b', null, learnedIds().length + '개')),
+      h('div', { class: 'stat' }, h('small', null, '연속 학습일'), h('b', null, st.n + '일'),
+        !st.todayDone ? h('small', null, '오늘 완료하면 ' + (st.n + 1) + '일') : null),
+      h('div', { class: 'stat' }, h('small', null, '전체 정답률'), h('b', null, acc === null ? '-' : acc + '%')),
+      h('div', { class: 'stat' }, h('small', null, '복습 단어'), h('b', null, Object.keys(S.review).length + '개'))),
+  ];
+}
+
+function viewToday() {
+  const key = ensureSet();
+  const d = S.days[key];
+  const t = today();
+  const retry = new Set(d.retryIds);
+  const words = d.wordIds.map((id) => WMAP.get(id)).filter(Boolean);
+  const mode = S.settings.viewMode;
+  const setMode = (m) => { S.settings.viewMode = m; save(); render(); };
+
+  const head = [
+    h('div', { class: 'row between' },
+      h('h1', null, '오늘의 단어'),
+      h('div', { class: 'seg' },
+        h('button', { class: mode === 'list' ? 'on' : '', onclick: () => setMode('list') }, '목록형'),
+        h('button', { class: mode === 'card' ? 'on' : '', onclick: () => setMode('card') }, '카드형'))),
+    h('div', { class: 'row', style: 'margin-bottom:12px' },
+      h('span', { class: 'muted' }, mmdd(key) + ' 세트 · ' + words.length + '개' + (retry.size ? ' (다시 보기 ' + retry.size + ')' : '')),
+      key !== t && !d.studyDone ? h('span', { class: 'tag' }, mmdd(key) + ' 세트 이어서') : null,
+      d.studyDone ? h('span', { class: 'tag done' }, '학습 완료') : null),
+    allRead() ? h('div', { class: 'info' }, '전체 단어 1회독 완료 — 복습 단어로 세트를 채웠습니다.') : null,
+  ];
+
+  let body;
+  if (mode === 'card') {
+    ui.cardIdx = Math.min(Math.max(ui.cardIdx, 0), words.length - 1);
+    const w = words[ui.cardIdx];
+    body = [
+      wordCard(w, { retry: retry.has(w.id) }),
+      h('div', { class: 'row between' },
+        h('button', { disabled: ui.cardIdx === 0, onclick: () => { ui.cardIdx--; render(); } }, '← 이전'),
+        h('span', { class: 'muted' }, (ui.cardIdx + 1) + ' / ' + words.length),
+        h('button', { disabled: ui.cardIdx === words.length - 1, onclick: () => { ui.cardIdx++; render(); } }, '다음 →')),
+    ];
+  } else {
+    body = words.map((w) => wordCard(w, { retry: retry.has(w.id) }));
+  }
+  const endBtn = h('button', { class: 'primary block', style: 'margin-top:16px', onclick: () => startTest('daily', { setDate: key }) },
+    d.studyDone ? '당일 테스트 다시 풀기' : '학습 종료 → 당일 테스트');
+  return [...head, ...body, endBtn];
+}
+
+function viewTest() {
+  const p = S.inProgress;
+  if (p && ui.resumePending) {
+    const label = p.type === 'cumulative' ? '누적 테스트' : '당일 테스트';
+    return [
+      h('h1', null, '테스트'),
+      h('div', { class: 'card' },
+        h('div', { class: 'status' }, '진행 중인 ' + label + '가 있습니다'),
+        h('p', { class: 'muted' }, p.results.length + ' / ' + p.ids.length + ' 문제까지 풀었습니다.'),
+        h('button', { class: 'primary block', onclick: () => { ui.resumePending = false; render(); } }, '이어서 풀기'),
+        h('button', { class: 'block', style: 'margin-top:8px', onclick: () => { ui.resumePending = false; restartTest(); } }, '처음부터')),
+    ];
+  }
+  if (p) return viewQuestion(p);
+  if (ui.lastResult) return viewResult(ui.lastResult);
+
+  const key = currentKey();
+  const d = key ? S.days[key] : null;
+  const learned = learnedIds().length;
+  const dailyBtn = d
+    ? h('button', { class: 'primary block', onclick: () => startTest('daily', { setDate: key }) },
+        d.studyDone ? '당일 테스트 다시 풀기' : '당일 테스트 (' + d.wordIds.length + '문제)')
+    : h('button', { class: 'block', disabled: true }, '먼저 오늘의 단어를 시작하세요');
+  const sel = h('select', { onchange: (e) => { ui.cumN = parseInt(e.target.value, 10); } },
+    [10, 20, 30].map((n) => h('option', { value: String(n), selected: ui.cumN === n }, n + '문제')));
+  return [
+    h('h1', null, '테스트'),
+    h('div', { class: 'card' },
+      h('h2', { style: 'margin-top:0' }, '당일 테스트'),
+      h('p', { class: 'muted' }, d ? mmdd(key) + ' 세트의 단어를 무작위 순서로 냅니다.' : '오늘의 단어를 먼저 학습하세요.'),
+      dailyBtn),
+    h('div', { class: 'card' },
+      h('h2', { style: 'margin-top:0' }, '누적 테스트'),
+      h('p', { class: 'muted' }, '학습한 단어 ' + learned + '개 중에서, 최근에 자주 틀렸고 오래 안 본 단어가 더 자주 나옵니다.'),
+      h('div', { class: 'row' }, sel,
+        h('button', { class: 'primary grow', disabled: learned === 0, onclick: () => startTest('cumulative', { n: ui.cumN }) }, '누적 테스트 시작'))),
+  ];
+}
+
+function hintOf(word) {
+  return [...word].map((c, i) => (i === 0 ? c : /[a-z]/i.test(c) ? '_' : c)).join(' ');
+}
+function viewQuestion(p) {
+  const id = p.ids[p.index];
+  const w = WMAP.get(id);
+  const answered = p.results.length > p.index;
+  const r = answered ? p.results[p.index] : null;
+  const label = p.type === 'cumulative' ? '누적 테스트' : p.type === 'daily' ? '당일 테스트' : '당일 테스트 (다시 풀기)';
+  const pct = Math.round(((p.index + (answered ? 1 : 0)) / p.ids.length) * 100);
+
+  const top = [
+    h('div', { class: 'row between' },
+      h('span', { class: 'muted' }, label),
+      h('b', null, (p.index + 1) + ' / ' + p.ids.length)),
+    h('div', { class: 'progress' }, h('div', { style: 'width:' + pct + '%' })),
+    h('div', { class: 'card' },
+      badge(w.pos),
+      h('div', { class: 'q-meaning' }, w.meaning),
+      h('div', { class: 'hint', 'aria-label': '힌트' }, hintOf(w.word))),
+  ];
+
+  if (!answered) {
+    const input = h('input', { type: 'text', id: 'answer', autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false', placeholder: '영단어 입력', maxlength: '60', enterkeyhint: 'done' });
+    const form = h('form', { onsubmit: (e) => { e.preventDefault(); if (input.value.trim()) submitAnswer(input.value); else input.focus(); } },
+      input,
+      h('button', { class: 'primary block', type: 'submit', style: 'margin-top:10px' }, '확인'));
+    return [...top, form, h('button', { class: 'link', onclick: () => go('home') }, '나가기 (진행 상황은 저장됩니다)')];
+  }
+
+  const other = !r.ok ? WORDS.find((x) => x.id !== id && answersOf(x).includes(norm(r.input))) : null;
+  const fb = h('div', { class: 'fb ' + (r.ok ? 'ok' : 'ng') },
+    h('div', { class: 'fb-title' }, r.ok ? '정답 O' : '오답 X'),
+    !r.ok ? h('p', { style: 'margin:6px 0' }, '입력: ' + r.input) : null,
+    h('div', { class: 'row', style: 'margin-top:6px' }, h('span', { class: 'word' }, w.word), badge(w.pos)),
+    h('div', { class: 'ex', style: 'margin-top:6px' }, w.example),
+    h('div', { class: 'exko' }, w.exampleKo),
+    other ? h('div', { class: 'info', style: 'margin:12px 0 0' },
+      '입력한 ' + other.word + '는 ‘' + other.meaning + '’ 뜻의 ' + other.pos + '입니다.',
+      h('div', { style: 'margin-top:8px' }, h('button', { onclick: acceptAsCorrect }, '정답으로 인정'))) : null,
+    h('div', { style: 'margin-top:6px' }, reviewBox(id)));
+  const last = p.index + 1 >= p.ids.length;
+  const next = h('button', { class: 'primary block', id: 'next', onclick: nextQuestion }, last ? '결과 보기' : '다음 문제');
+  return [...top, fb, next];
+}
+
+function viewResult(res) {
+  const rate = res.total ? Math.round((res.correct / res.total) * 100) : 0;
+  const label = res.type === 'cumulative' ? '누적 테스트 결과' : '당일 테스트 결과';
+  const wrongWords = res.wrongIds.map((id) => WMAP.get(id)).filter(Boolean);
+  const again = res.type === 'cumulative'
+    ? h('button', { class: 'primary grow', onclick: () => startTest('cumulative', { n: res.n || res.total }) }, '한 번 더')
+    : h('button', { class: 'primary grow', onclick: () => startTest('daily', { setDate: res.setDate }) }, '다시 풀기');
+  return [
+    h('h1', null, label),
+    h('div', { class: 'card' },
+      h('div', { class: 'score' }, res.correct + ' / ' + res.total),
+      h('div', { class: 'muted' }, '정답률 ' + rate + '%'),
+      res.type === 'daily' ? h('p', { style: 'margin:10px 0 0' }, '오늘 학습을 완료했습니다. 틀린 단어는 다음 날 ‘다시 보기’로 나옵니다.') : null),
+    h('h2', null, wrongWords.length ? '틀린 단어 ' + wrongWords.length + '개' : '모두 맞혔습니다 🎉'),
+    ...wrongWords.map((w) => wordCard(w)),
+    h('div', { class: 'row', style: 'margin-top:12px' },
+      again,
+      h('button', { class: 'grow', onclick: () => { ui.lastResult = null; go('home'); } }, '홈으로')),
+    h('button', { class: 'link', onclick: () => { ui.lastResult = null; render(); } }, '테스트 메뉴로'),
+  ];
+}
+
+function viewReview() {
+  const items = Object.entries(S.review)
+    .map(([id, date]) => ({ w: WMAP.get(Number(id)), date }))
+    .filter((x) => x.w)
+    .sort((a, b) => b.date.localeCompare(a.date) || a.w.word.localeCompare(b.w.word));
+  if (!items.length) {
+    return [h('h1', null, '복습 단어장'), h('div', { class: 'card muted' }, '아직 복습 단어가 없습니다. 단어 카드나 테스트 결과에서 ‘복습’을 체크하면 여기에 모입니다.')];
+  }
+  return [
+    h('h1', null, '복습 단어장'),
+    h('p', { class: 'muted' }, items.length + '개'),
+    ...items.map(({ w, date }) => h('div', { class: 'card' },
+      h('div', { class: 'row between' },
+        h('div', { class: 'row' }, h('span', { class: 'word' }, w.word), badge(w.pos)),
+        h('button', { onclick: () => { toggleReview(w.id, false); render(); } }, '해제')),
+      h('div', { class: 'meaning' }, w.meaning),
+      h('div', { class: 'ex' }, w.example),
+      h('div', { class: 'exko' }, w.exampleKo),
+      h('div', { class: 'muted', style: 'margin-top:6px' }, '추가 ' + date.replace(/-/g, '.')))),
+  ];
+}
+
+function viewSettings() {
+  const file = h('input', { type: 'file', accept: 'application/json,.json', style: 'display:none', onchange: (e) => { importJson(e.target.files[0]); e.target.value = ''; } });
+  const lb = S.settings.lastBackup;
+  const out = [
+    h('h1', null, '설정'),
+    h('div', { class: 'card' },
+      h('h2', { style: 'margin-top:0' }, '학습 기록 백업'),
+      h('p', { class: 'muted' }, '마지막 백업: ' + (lb ? lb.replace(/-/g, '.') + ' (' + diffDays(lb, today()) + '일 전)' : '없음')),
+      h('div', { class: 'row' },
+        h('button', { class: 'primary grow', onclick: exportJson }, '내보내기 (JSON)'),
+        h('button', { class: 'grow', onclick: () => file.click() }, '가져오기'),
+        file),
+      h('p', { class: 'muted' }, '기록은 이 브라우저에만 저장됩니다. 접속 주소(파일로 열기 / 웹 주소)가 다르면 기록도 따로입니다. 기기를 바꾸거나 브라우저 데이터를 지우기 전에 내보내기를 해 두세요.')),
+    h('div', { class: 'card' },
+      h('h2', { style: 'margin-top:0' }, '기록 초기화'),
+      h('p', { class: 'muted' }, '모든 학습 기록을 지웁니다. 지우기 직전 기록은 한 벌 따로 남깁니다.'),
+      h('button', { class: 'danger block', onclick: resetAll }, '기록 초기화')),
+    h('p', { class: 'muted' }, '단어 데이터 ' + WORDS.length + '개'),
+  ];
+  if (DEV) {
+    const off = devOffset();
+    out.push(h('div', { class: 'card dev' },
+      h('h2', { style: 'margin-top:0' }, '개발 모드'),
+      h('p', { class: 'muted' }, '오늘 날짜 = ' + today() + ' (실제 날짜 + ' + off + '일). 날짜 이동 값은 학습 기록과 따로 저장됩니다.'),
+      h('div', { class: 'row' },
+        h('button', { class: 'grow', onclick: () => { lsSet(DEVKEY, String(off + 1)); toast('하루 넘겼습니다: ' + today()); render(); } }, '날짜 하루 넘기기'),
+        h('button', { class: 'grow', onclick: () => { lsSet(DEVKEY, '0'); toast('실제 날짜로 돌아왔습니다.'); render(); } }, '날짜 되돌리기'))));
+  }
+  return out;
+}
+
+function render() {
+  const views = { home: viewHome, today: viewToday, test: viewTest, review: viewReview, settings: viewSettings };
+  const app = document.getElementById('app');
+  app.replaceChildren(...views[ui.view]().filter(Boolean));
+  document.getElementById('nav').replaceChildren(...TABS.map(([k, label]) =>
+    h('button', { class: ui.view === k ? 'on' : '', 'aria-current': ui.view === k ? 'page' : null, onclick: () => go(k) }, label)));
+  const answer = document.getElementById('answer');
+  if (answer) answer.focus();
+  else { const next = document.getElementById('next'); if (next) next.focus(); }
+}
+
+if (S.inProgress) { ui.resumePending = true; ui.view = 'test'; }
+render();
+</script>
+</body>
+</html>
